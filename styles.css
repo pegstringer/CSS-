@@ -217,9 +217,11 @@ header h1 {
     border: 2px dashed #667eea;
 }
 
-.target-element {
+.target-element,
+.preview-area > div {
     font-size: 4em;
     transition: all 0.3s ease;
+    display: inline-block;
 }
 
 .code-editor {

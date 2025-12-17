@@ -355,10 +355,21 @@ function loadChallenge(level) {
     exampleText.classList.remove('show');
 
     // プレビューエリア更新
-    previewArea.innerHTML = challenge.targetHTML;
-    const targetElement = previewArea.querySelector(`.${challenge.targetClass}`) || previewArea.firstElementChild;
-    if (targetElement) {
-        targetElement.className = challenge.targetClass;
+    // targetHTMLがプレーンテキストの場合はdivでラップ
+    if (challenge.targetHTML.includes('<')) {
+        // すでにHTMLタグがある場合
+        previewArea.innerHTML = challenge.targetHTML;
+        const targetElement = previewArea.querySelector(`.${challenge.targetClass}`);
+        if (!targetElement) {
+            // クラスが見つからない場合は最初の要素にクラスを追加
+            const firstElement = previewArea.firstElementChild;
+            if (firstElement) {
+                firstElement.className = challenge.targetClass;
+            }
+        }
+    } else {
+        // プレーンテキスト（絵文字など）の場合はdivでラップ
+        previewArea.innerHTML = `<div class="${challenge.targetClass}">${challenge.targetHTML}</div>`;
     }
 
     // コード入力リセット
@@ -431,6 +442,20 @@ function resetCode() {
     const existingStyle = document.getElementById('userStyle');
     if (existingStyle) {
         existingStyle.remove();
+    }
+
+    // プレビューエリアも再読み込み
+    if (challenge.targetHTML.includes('<')) {
+        previewArea.innerHTML = challenge.targetHTML;
+        const targetElement = previewArea.querySelector(`.${challenge.targetClass}`);
+        if (!targetElement) {
+            const firstElement = previewArea.firstElementChild;
+            if (firstElement) {
+                firstElement.className = challenge.targetClass;
+            }
+        }
+    } else {
+        previewArea.innerHTML = `<div class="${challenge.targetClass}">${challenge.targetHTML}</div>`;
     }
 
     feedback.classList.remove('show');
