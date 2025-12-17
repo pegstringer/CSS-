@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Garden - 楽しくCSSを学ぼう！</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎨 CSS Garden</h1>
+            <p class="tagline">遊びながらCSSをマスター！</p>
+        </header>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+            <span class="progress-text" id="progressText">Level 1 / 10</span>
+        </div>
+
+        <div class="main-content">
+            <div class="challenge-panel">
+                <h2>🎯 チャレンジ <span id="levelNumber">1</span></h2>
+                <div class="challenge-description" id="challengeDescription">
+                    花を赤色にしてみよう！
+                </div>
+                <div class="hint-section">
+                    <button class="hint-btn" id="hintBtn">💡 ヒント</button>
+                    <div class="hint-text" id="hintText"></div>
+                </div>
+                <div class="goal-section">
+                    <h3>🎓 学ぶこと</h3>
+                    <p id="goalText">color プロパティの使い方</p>
+                </div>
+            </div>
+
+            <div class="workspace">
+                <div class="preview-panel">
+                    <h3>👀 プレビュー</h3>
+                    <div class="preview-area" id="previewArea">
+                        <div class="target-element" id="targetElement">
+                            🌸
+                        </div>
+                    </div>
+                </div>
+
+                <div class="code-panel">
+                    <h3>✏️ CSS エディタ</h3>
+                    <div class="code-editor">
+                        <pre class="code-line-numbers" id="lineNumbers">1</pre>
+                        <textarea
+                            class="code-input"
+                            id="codeInput"
+                            placeholder=".flower {
+  /* ここにCSSを書いてね！ */
+}"
+                            spellcheck="false"
+                        ></textarea>
+                    </div>
+                    <div class="button-group">
+                        <button class="btn btn-primary" id="applyBtn">✨ 適用する</button>
+                        <button class="btn btn-secondary" id="resetBtn">🔄 リセット</button>
+                        <button class="btn btn-success" id="checkBtn">✅ チェック</button>
+                    </div>
+                    <div class="feedback" id="feedback"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button class="nav-btn" id="prevBtn" disabled>⬅️ 前へ</button>
+            <button class="nav-btn" id="nextBtn">次へ ➡️</button>
+        </div>
+
+        <div class="celebration" id="celebration">
+            <div class="celebration-content">
+                <h2>🎉 素晴らしい！</h2>
+                <p>チャレンジをクリアしました！</p>
+                <button class="btn btn-primary" id="continueBtn">次へ進む</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
