@@ -2,9 +2,9 @@
 const challenges = [
     {
         level: 1,
-        description: '花を赤色にしてみよう！',
+        description: '「花」という文字を赤色にしてみよう！',
         goal: 'color プロパティの使い方',
-        explanation: `<strong>color</strong> プロパティは、テキストや絵文字の色を変えるために使います。<br><br>
+        explanation: `<strong>color</strong> プロパティは、テキストの色を変えるために使います。<br><br>
             <strong>📝 基本の書き方：</strong><br>
             <code>color: 色の名前;</code><br><br>
             <strong>🎨 使える色の例：</strong><br>
@@ -19,9 +19,10 @@ const challenges = [
             ✅ <code>color: red;</code> ← 正解！`,
         hint: `ヒント：波括弧 { } の中に、以下のように書いてみよう！<br><br>
             <code>color: red;</code><br><br>
-            💡 コロン(:)とセミコロン(;)を忘れずに！`,
+            💡 コロン(:)とセミコロン(;)を忘れずに！<br>
+            文字の色が赤くなるのを確認してね！`,
         example: '.flower {\n  color: red;\n}',
-        targetHTML: '🌸',
+        targetHTML: '花',
         targetClass: 'flower',
         initialCSS: '.flower {\n  \n}',
         validation: (element) => {
@@ -60,7 +61,7 @@ const challenges = [
     },
     {
         level: 3,
-        description: '星に背景色をつけよう！（黄色）',
+        description: 'ボックスの背景を黄色にしてみよう！',
         goal: 'background-color プロパティの使い方',
         explanation: `<strong>background-color</strong> プロパティは、要素の背景（後ろ側）の色を変えるために使います。<br><br>
             <strong>📝 基本の書き方：</strong><br>
@@ -75,13 +76,14 @@ const challenges = [
             <strong>⚠️ よくある間違い：</strong><br>
             ❌ <code>background: yellow;</code> ← これも動くけど詳しくは後で！<br>
             ✅ <code>background-color: yellow;</code> ← 今はこっちを使おう！`,
-        hint: `ヒント：星の背景を黄色にするには<br><br>
+        hint: `ヒント：ボックスの背景を黄色にするには<br><br>
             <code>background-color: yellow;</code><br><br>
-            💡 「background-color」は長いけど、全部書いてね！`,
-        example: '.star {\n  background-color: yellow;\n}',
+            💡 「background-color」は長いけど、全部書いてね！<br>
+            ボックス全体が黄色くなるよ！`,
+        example: '.box {\n  padding: 20px;\n  background-color: yellow;\n}',
         targetHTML: '⭐',
-        targetClass: 'star',
-        initialCSS: '.star {\n  \n}',
+        targetClass: 'box',
+        initialCSS: '.box {\n  padding: 20px;\n  \n}',
         validation: (element) => {
             const bgColor = window.getComputedStyle(element).backgroundColor;
             return bgColor === 'rgb(255, 255, 0)' || bgColor === 'yellow';
@@ -399,39 +401,63 @@ function updateLineNumbers() {
 
 // CSSを適用
 function applyCSS(showMessage = true) {
-    // 既存のスタイルタグを削除
-    const existingStyle = document.getElementById('userStyle');
-    if (existingStyle) {
-        existingStyle.remove();
-    }
+    try {
+        // 既存のスタイルタグを削除
+        const existingStyle = document.getElementById('userStyle');
+        if (existingStyle) {
+            existingStyle.remove();
+        }
 
-    // ユーザーのCSSを取得
-    let cssContent = codeInput.value;
+        // ユーザーのCSSを取得
+        let cssContent = codeInput.value.trim();
 
-    // CSSセレクタにプレフィックスを追加して、プレビューエリア内でのみ適用されるようにする
-    // これにより詳細度が上がり、確実に適用される
-    // 例: .flower { ... } → #previewArea .flower { ... }
-    cssContent = cssContent.replace(/(\.[a-zA-Z0-9_-]+)\s*{/g, '#previewArea $1 {');
+        if (!cssContent) {
+            if (showMessage) {
+                showFeedback('CSSコードを入力してください', 'error');
+            }
+            return;
+        }
 
-    // 新しいスタイルタグを作成
-    const style = document.createElement('style');
-    style.id = 'userStyle';
-    style.textContent = cssContent;
-    document.head.appendChild(style);
+        // CSSセレクタにプレフィックスを追加
+        // .className { ... } → #previewArea .className { ... }
+        cssContent = cssContent.replace(/(\.[a-zA-Z0-9_-]+)\s*\{/g, '#previewArea $1 {');
 
-    // プレビューエリアの要素を再確認（デバッグ用）
-    const challenge = challenges[currentLevel];
-    const targetElement = previewArea.querySelector(`.${challenge.targetClass}`);
+        console.log('Applying CSS:', cssContent); // デバッグ用
 
-    if (targetElement) {
-        // 強制的に再描画をトリガー
-        targetElement.style.display = 'none';
-        targetElement.offsetHeight; // reflow
-        targetElement.style.display = '';
-    }
+        // 新しいスタイルタグを作成
+        const style = document.createElement('style');
+        style.id = 'userStyle';
+        style.textContent = cssContent;
+        document.head.appendChild(style);
 
-    if (showMessage) {
-        showFeedback('CSSを適用しました！プレビューを確認してね 👀', 'success');
+        // プレビューエリアの要素を確認
+        const challenge = challenges[currentLevel];
+        const targetElement = previewArea.querySelector(`.${challenge.targetClass}`);
+
+        console.log('Target element:', targetElement); // デバッグ用
+        console.log('Target class:', challenge.targetClass); // デバッグ用
+
+        if (targetElement) {
+            // 強制的に再描画
+            void targetElement.offsetWidth;
+
+            // デバッグ: 適用されたスタイルを確認
+            const computedStyle = window.getComputedStyle(targetElement);
+            console.log('Computed color:', computedStyle.color);
+            console.log('Computed background:', computedStyle.backgroundColor);
+            console.log('Computed font-size:', computedStyle.fontSize);
+        } else {
+            console.error('Target element not found!');
+        }
+
+        if (showMessage) {
+            showFeedback('CSSを適用しました！プレビューを確認してね 👀', 'success');
+        }
+    } catch (error) {
+        console.error('CSS適用エラー:', error);
+        if (showMessage) {
+            showFeedback('CSS適用エラーが発生しました', 'error');
+        }
     }
 }
 

@@ -222,6 +222,7 @@ header h1 {
     font-size: 4em;
     transition: all 0.3s ease;
     display: inline-block;
+    /* ユーザーCSSが確実に適用されるように最小限のスタイルのみ */
 }
 
 .code-editor {

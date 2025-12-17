@@ -17,16 +17,16 @@
 
 ## 🎓 学べるCSSプロパティ
 
-1. **color** - 文字色の変更
-2. **font-size** - テキストサイズの調整
-3. **background-color** - 背景色の設定
-4. **padding** - 内側の余白
-5. **text-align** - テキストの配置
-6. **border-radius** - 角丸の作成
-7. **text-shadow** - テキストに影をつける
-8. **border** - 枠線の設定
-9. **transform** - 要素の変形（回転など）
-10. **linear-gradient** - グラデーションの作成
+1. **color** - 文字色の変更（テキストを赤く）
+2. **font-size** - テキストサイズの調整（絵文字を大きく）
+3. **background-color** - 背景色の設定（ボックスを黄色に）
+4. **padding** - 内側の余白（ゆったりスペース）
+5. **text-align** - テキストの配置（中央揃え）
+6. **border-radius** - 角丸の作成（優しい見た目）
+7. **text-shadow** - テキストに影をつける（立体的に）
+8. **border** - 枠線の設定（囲みをつける）
+9. **transform** - 要素の変形（45度回転）
+10. **linear-gradient** - グラデーションの作成（美しい色の変化）
 
 ## 🚀 使い方
 
