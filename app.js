@@ -111,8 +111,9 @@ const challenges = [
         targetClass: 'heart',
         initialCSS: '.heart {\n  background-color: pink;\n  \n}',
         validation: (element) => {
-            const padding = window.getComputedStyle(element).padding;
-            return padding === '20px';
+            // paddingTopで確認（より確実）
+            const paddingTop = window.getComputedStyle(element).paddingTop;
+            return paddingTop === '20px';
         }
     },
     {
@@ -172,7 +173,8 @@ const challenges = [
         initialCSS: '.rainbow {\n  background: lightblue;\n  padding: 20px;\n  \n}',
         validation: (element) => {
             const borderRadius = window.getComputedStyle(element).borderRadius;
-            return borderRadius === '15px';
+            // '15px' または '15px 15px 15px 15px' のような形式を受け入れる
+            return borderRadius === '15px' || borderRadius === '15px 15px 15px 15px';
         }
     },
     {
@@ -396,40 +398,69 @@ function updateLineNumbers() {
 }
 
 // CSSを適用
-function applyCSS() {
+function applyCSS(showMessage = true) {
     // 既存のスタイルタグを削除
     const existingStyle = document.getElementById('userStyle');
     if (existingStyle) {
         existingStyle.remove();
     }
 
+    // ユーザーのCSSを取得
+    let cssContent = codeInput.value;
+
+    // CSSセレクタにプレフィックスを追加して、プレビューエリア内でのみ適用されるようにする
+    // これにより詳細度が上がり、確実に適用される
+    // 例: .flower { ... } → #previewArea .flower { ... }
+    cssContent = cssContent.replace(/(\.[a-zA-Z0-9_-]+)\s*{/g, '#previewArea $1 {');
+
     // 新しいスタイルタグを作成
     const style = document.createElement('style');
     style.id = 'userStyle';
-    style.textContent = codeInput.value;
+    style.textContent = cssContent;
     document.head.appendChild(style);
 
-    showFeedback('CSSを適用しました！', 'success');
+    // プレビューエリアの要素を再確認（デバッグ用）
+    const challenge = challenges[currentLevel];
+    const targetElement = previewArea.querySelector(`.${challenge.targetClass}`);
+
+    if (targetElement) {
+        // 強制的に再描画をトリガー
+        targetElement.style.display = 'none';
+        targetElement.offsetHeight; // reflow
+        targetElement.style.display = '';
+    }
+
+    if (showMessage) {
+        showFeedback('CSSを適用しました！プレビューを確認してね 👀', 'success');
+    }
 }
 
 // チェック
 function checkSolution() {
-    const challenge = challenges[currentLevel];
-    const targetElement = previewArea.querySelector(`.${challenge.targetClass}`);
+    // チェック前に自動的にCSSを適用（フィードバックなし）
+    applyCSS(false);
 
-    if (!targetElement) {
-        showFeedback('エラー: ターゲット要素が見つかりません', 'error');
-        return;
-    }
+    // 少し待ってからチェック（CSSの適用を確実にするため）
+    setTimeout(() => {
+        const challenge = challenges[currentLevel];
+        const targetElement = previewArea.querySelector(`.${challenge.targetClass}`);
 
-    if (challenge.validation(targetElement)) {
-        showFeedback('正解です！素晴らしい！ 🎉', 'success');
-        setTimeout(() => {
-            celebration.classList.add('show');
-        }, 500);
-    } else {
-        showFeedback('もう少し！ヒントを見てみよう 💡', 'error');
-    }
+        if (!targetElement) {
+            showFeedback('エラー: ターゲット要素が見つかりません', 'error');
+            return;
+        }
+
+        // getComputedStyleで実際に適用されたスタイルを確認
+        // これにより、お作法が合っていれば正解になる
+        if (challenge.validation(targetElement)) {
+            showFeedback('正解です！素晴らしい！ 🎉', 'success');
+            setTimeout(() => {
+                celebration.classList.add('show');
+            }, 500);
+        } else {
+            showFeedback('もう少し！「💡 ヒント」を見てみよう', 'error');
+        }
+    }, 100);
 }
 
 // リセット
