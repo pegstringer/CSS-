@@ -96,12 +96,15 @@ header h1 {
     border-left: 4px solid #f5576c;
 }
 
-.hint-section {
-    margin-bottom: 20px;
+.explanation-section,
+.hint-section,
+.example-section {
+    margin-bottom: 15px;
 }
 
-.hint-btn {
-    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+.explanation-btn,
+.hint-btn,
+.example-btn {
     border: none;
     padding: 10px 20px;
     border-radius: 8px;
@@ -109,22 +112,57 @@ header h1 {
     font-size: 1em;
     font-weight: bold;
     transition: transform 0.2s;
+    width: 100%;
 }
 
-.hint-btn:hover {
-    transform: scale(1.05);
+.explanation-btn {
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
 }
 
-.hint-text {
+.hint-btn {
+    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+}
+
+.example-btn {
+    background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%);
+}
+
+.explanation-btn:hover,
+.hint-btn:hover,
+.example-btn:hover {
+    transform: scale(1.02);
+}
+
+.explanation-text,
+.hint-text,
+.example-text {
     margin-top: 10px;
     padding: 15px;
     background: #f0f4ff;
     border-radius: 8px;
     display: none;
+    line-height: 1.6;
+}
+
+.explanation-text {
+    border-left: 3px solid #a8edea;
+}
+
+.hint-text {
     border-left: 3px solid #667eea;
 }
 
-.hint-text.show {
+.example-text {
+    border-left: 3px solid #d299c2;
+    background: #282c34;
+    color: #abb2bf;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+}
+
+.explanation-text.show,
+.hint-text.show,
+.example-text.show {
     display: block;
     animation: slideDown 0.3s ease;
 }
@@ -138,6 +176,21 @@ header h1 {
 .goal-section h3 {
     color: #667eea;
     margin-bottom: 8px;
+}
+
+.explanation-text code,
+.hint-text code {
+    background: #282c34;
+    color: #61dafb;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+}
+
+.explanation-text strong,
+.hint-text strong {
+    color: #667eea;
 }
 
 .workspace {
